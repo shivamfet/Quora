@@ -28,6 +28,8 @@ public class CommonController {
                                                                @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, UserNotFoundException {
         UserAuth userAuth = authenticationService.authenticate(authorization);
         User user = userBusinessService.getUserByUuid(userId);
+
+
         if (user == null) {
             throw new UserNotFoundException("USR-001" , "User with entered uuid does not exist");
         }

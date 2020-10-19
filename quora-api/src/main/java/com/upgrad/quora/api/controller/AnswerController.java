@@ -46,6 +46,7 @@ public class AnswerController {
         answer.setQuestion(question);
         answer.setDate(ZonedDateTime.now());
         answer.setAns(answerRequest.getAnswer());
+        answer.setUser(userAuth.getUser());
         answerService.createAnswer(answer);
 
         AnswerResponse answerResponse = new AnswerResponse().id(answer.getUuid()).status("ANSWER CREATED");
@@ -89,10 +90,11 @@ public class AnswerController {
         UserAuth userAuth = authenticationService.authenticate(authorization);
         Question question = questionService.getQuestionByUuid(questionId);
 
-        answerService.getAnswersToQuestion(questionId);
+        List<Answer> answers = answerService.getAnswersToQuestion(questionId);
 
         List<AnswerDetailsResponse> answersDetailsResponse = new ArrayList<AnswerDetailsResponse>();
-        for (AnswerDetailsResponse answerDetailsResponse : answersDetailsResponse) {
+        for (Answer answer : answers) {
+            AnswerDetailsResponse answerDetailsResponse = new AnswerDetailsResponse().id(answer.getUuid()).answerContent(answer.getAns()).questionContent(answer.getQuestion().getContent());
             answersDetailsResponse.add(answerDetailsResponse);
         }
         return new ResponseEntity<List<AnswerDetailsResponse>>(answersDetailsResponse , HttpStatus.OK);
