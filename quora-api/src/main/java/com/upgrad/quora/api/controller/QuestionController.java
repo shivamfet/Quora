@@ -80,6 +80,7 @@ public class QuestionController {
                throw new AuthorizationFailedException("ATHR-003" , "Only the question owner or admin can delete the question");
            }
 
+           questionService.deleteQuestion(question);
            QuestionDeleteResponse questionDeleteResponse = new QuestionDeleteResponse().id(question.getUuid()).status("QUESTION DELETED");
            return new ResponseEntity<QuestionDeleteResponse>(questionDeleteResponse , HttpStatus.OK);
     }
